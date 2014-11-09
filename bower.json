@@ -1,0 +1,13 @@
+{
+  "name": "purescript-index",
+  "version": "0.0.0",
+  "description": "Indexable abstractions.",
+  "license": "MIT",
+  "dependencies": {
+    "purescript-maybe": "~0.2.1",
+    "purescript-arrays": "~0.2.1",
+    "purescript-maps": "~0.1.1",
+    "purescript-sets": "~0.1.0",
+    "purescript-identity": "~0.1.0"
+  }
+}
