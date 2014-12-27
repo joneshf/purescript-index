@@ -1,6 +1,5 @@
 module Optic.Index where
 
-  import Data.Array (snoc)
   import Data.Identity (Identity(..))
   import Data.Maybe (maybe, Maybe(..))
 
@@ -27,7 +26,7 @@ module Optic.Index where
   instance indexArray :: Index [a] Number a where
     ix n _    as | n < 0 = pure as
     ix _ _    []         = pure []
-    ix 0 a2fa (a:as)     = snoc as <$> a2fa a
+    ix 0 a2fa (a:as)     = a2fa a <#> \a' -> a':as
     ix n a2fa (a:as)     = (:) a <$> ix (n - 1) a2fa as
 
   instance indexSet :: (Ord a) => Index (S.Set a) a Unit where

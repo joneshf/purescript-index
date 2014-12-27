@@ -2,8 +2,9 @@ module Optic.Index.Class where
 
   import Data.Identity (Identity())
   import Data.Maybe (Maybe())
-  import qualified Data.Set as S
+
   import qualified Data.Map as M
+  import qualified Data.Set as S
   import qualified Data.StrMap as SM
 
   class IndexKey m k
