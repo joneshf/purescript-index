@@ -1,10 +1,11 @@
 'use strict'
 
-var gulp       = require('gulp')
+var gulp        = require('gulp')
   , bump        = require('gulp-bump')
   , filter      = require('gulp-filter')
   , git         = require('gulp-git')
-  , purescript = require('gulp-purescript')
+  , purescript  = require('gulp-purescript')
+  , runSequence = require('run-sequence')
   , tagVersion  = require('gulp-tag-version')
   ;
 
@@ -15,7 +16,11 @@ var paths = {
       'bower_components/purescript-*/src/**/*.purs.hs'
     ],
     dest: '',
-    docsDest: 'README.md'
+    docsDest: 'README.md',
+    manifests: [
+      'bower.json',
+      'package.json'
+    ]
 };
 
 var options = {
@@ -34,29 +39,28 @@ var compile = function(compiler) {
         .pipe(gulp.dest(paths.dest));
 };
 
+function bumpType(type) {
+    return function() {
+        return gulp.src(paths.manifests)
+            .pipe(bump({type: type}))
+            .pipe(gulp.dest('./'));
+    }
+}
+
 gulp.task('tag', function() {
-    return gulp.src(['bower.json', 'package.json'])
+    return gulp.src(paths.manifests)
         .pipe(git.commit('Update versions.'))
         .pipe(filter('bower.json'))
         .pipe(tagVersion());
 });
 
-// For whatever reason, these cannot be factored out...
-gulp.task('bump-major', function() {
-    return gulp.src(['bower.json', 'package.json'])
-        .pipe(bump({type: 'major'}))
-        .pipe(gulp.dest('./'));
-});
-gulp.task('bump-minor', function() {
-    return gulp.src(['bower.json', 'package.json'])
-        .pipe(bump({type: 'minor'}))
-        .pipe(gulp.dest('./'));
-});
-gulp.task('bump-patch', function() {
-    return gulp.src(['bower.json', 'package.json'])
-        .pipe(bump({type: 'patch'}))
-        .pipe(gulp.dest('./'));
-});
+gulp.task('bump-major', bumpType('major'));
+gulp.task('bump-minor', bumpType('minor'));
+gulp.task('bump-patch', bumpType('patch'));
+
+gulp.task('bump-tag-major', runSequence('bump-major', 'tag'));
+gulp.task('bump-tag-minor', runSequence('bump-minor', 'tag'));
+gulp.task('bump-tag-patch', runSequence('bump-patch', 'tag'));
 
 gulp.task('make', function() {
     return compile(purescript.pscMake);
