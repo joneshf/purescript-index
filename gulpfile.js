@@ -1,7 +1,11 @@
 'use strict'
 
 var gulp       = require('gulp')
+  , bump        = require('gulp-bump')
+  , filter      = require('gulp-filter')
+  , git         = require('gulp-git')
   , purescript = require('gulp-purescript')
+  , tagVersion  = require('gulp-tag-version')
   ;
 
 var paths = {
@@ -29,6 +33,30 @@ var compile = function(compiler) {
         .pipe(psc)
         .pipe(gulp.dest(paths.dest));
 };
+
+gulp.task('tag', function() {
+    return gulp.src(['bower.json', 'package.json'])
+        .pipe(git.commit('Update versions.'))
+        .pipe(filter('bower.json'))
+        .pipe(tagVersion());
+});
+
+// For whatever reason, these cannot be factored out...
+gulp.task('bump-major', function() {
+    return gulp.src(['bower.json', 'package.json'])
+        .pipe(bump({type: 'major'}))
+        .pipe(gulp.dest('./'));
+});
+gulp.task('bump-minor', function() {
+    return gulp.src(['bower.json', 'package.json'])
+        .pipe(bump({type: 'minor'}))
+        .pipe(gulp.dest('./'));
+});
+gulp.task('bump-patch', function() {
+    return gulp.src(['bower.json', 'package.json'])
+        .pipe(bump({type: 'patch'}))
+        .pipe(gulp.dest('./'));
+});
 
 gulp.task('make', function() {
     return compile(purescript.pscMake);
