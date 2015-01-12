@@ -40,11 +40,9 @@ var compile = function(compiler) {
 };
 
 function bumpType(type) {
-    return function() {
-        return gulp.src(paths.manifests)
-            .pipe(bump({type: type}))
-            .pipe(gulp.dest('./'));
-    }
+    return gulp.src(paths.manifests)
+        .pipe(bump({type: type}))
+        .pipe(gulp.dest('./'));
 }
 
 gulp.task('tag', function() {
@@ -54,13 +52,25 @@ gulp.task('tag', function() {
         .pipe(tagVersion());
 });
 
-gulp.task('bump-major', bumpType('major'));
-gulp.task('bump-minor', bumpType('minor'));
-gulp.task('bump-patch', bumpType('patch'));
+gulp.task('bump-major', function() {
+    return bumpType('major')
+});
+gulp.task('bump-minor', function() {
+    return bumpType('minor')
+});
+gulp.task('bump-patch', function() {
+    return bumpType('patch')
+});
 
-gulp.task('bump-tag-major', runSequence('bump-major', 'tag'));
-gulp.task('bump-tag-minor', runSequence('bump-minor', 'tag'));
-gulp.task('bump-tag-patch', runSequence('bump-patch', 'tag'));
+gulp.task('bump-tag-major', function() {
+    return runSequence('bump-major', 'tag');
+});
+gulp.task('bump-tag-minor', function() {
+    return runSequence('bump-minor', 'tag');
+});
+gulp.task('bump-tag-patch', function() {
+    return runSequence('bump-patch', 'tag');
+});
 
 gulp.task('make', function() {
     return compile(purescript.pscMake);
