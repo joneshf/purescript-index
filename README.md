@@ -2,110 +2,258 @@
 
 ## Module Optic.At
 
-### Type Classes
+#### `At`
 
-    class (Index m a b) <= At m a b where
-      at :: a -> LensP m (Maybe b)
+``` purescript
+class (Index m a b) <= At m a b where
+  at :: a -> LensP m (Maybe b)
+```
 
 
-### Type Class Instances
+#### `atIdentity`
 
-    instance atIdentity :: At (Identity a) Unit a
+``` purescript
+instance atIdentity :: At (Identity a) Unit a
+```
 
-    instance atMap :: (Ord k) => At (M.Map k v) k v
 
-    instance atMaybe :: At (Maybe a) Unit a
+#### `atMaybe`
 
-    instance atSet :: (Ord v) => At (S.Set v) v Unit
+``` purescript
+instance atMaybe :: At (Maybe a) Unit a
+```
 
-    instance atStrMap :: At (SM.StrMap v) String v
+
+#### `atSet`
+
+``` purescript
+instance atSet :: (Ord v) => At (S.Set v) v Unit
+```
+
+
+#### `atMap`
+
+``` purescript
+instance atMap :: (Ord k) => At (M.Map k v) k v
+```
+
+
+#### `atStrMap`
+
+``` purescript
+instance atStrMap :: At (SM.StrMap v) String v
+```
+
 
 
 ## Module Optic.Contains
 
-### Type Classes
+#### `Contains`
 
-    class (IndexKey m a) <= Contains m a where
-      contains :: a -> LensP m Boolean
+``` purescript
+class (IndexKey m a) <= Contains m a where
+  contains :: a -> LensP m Boolean
+```
 
 
-### Type Class Instances
+#### `containsSet`
 
-    instance containsSet :: (Ord k) => Contains (Set k) k
+``` purescript
+instance containsSet :: (Ord k) => Contains (Set k) k
+```
+
 
 
 ## Module Optic.Index
 
-### Type Classes
+#### `Index`
 
-    class (IndexKey m a, IndexValue m b) <= Index m a b where
-      ix :: a -> TraversalP m b
+``` purescript
+class (IndexKey m a, IndexValue m b) <= Index m a b where
+  ix :: a -> TraversalP m b
+```
 
 
-### Type Class Instances
+#### `indexArr`
 
-    instance indexArr :: (Eq e) => Index (e -> a) e a
+``` purescript
+instance indexArr :: (Eq e) => Index (e -> a) e a
+```
 
-    instance indexArray :: Index [a] Number a
 
-    instance indexIdentity :: Index (Identity a) Unit a
+#### `indexMaybe`
 
-    instance indexMap :: (Ord k) => Index (M.Map k v) k v
+``` purescript
+instance indexMaybe :: Index (Maybe a) Unit a
+```
 
-    instance indexMaybe :: Index (Maybe a) Unit a
 
-    instance indexSet :: (Ord a) => Index (S.Set a) a Unit
+#### `indexIdentity`
 
-    instance indexStrMap :: Index (SM.StrMap v) String v
+``` purescript
+instance indexIdentity :: Index (Identity a) Unit a
+```
+
+
+#### `indexArray`
+
+``` purescript
+instance indexArray :: Index [a] Number a
+```
+
+
+#### `indexSet`
+
+``` purescript
+instance indexSet :: (Ord a) => Index (S.Set a) a Unit
+```
+
+
+#### `indexMap`
+
+``` purescript
+instance indexMap :: (Ord k) => Index (M.Map k v) k v
+```
+
+
+#### `indexStrMap`
+
+``` purescript
+instance indexStrMap :: Index (SM.StrMap v) String v
+```
+
 
 
 ## Module Optic.Index.Class
 
-### Type Classes
+#### `IndexKey`
 
-    class IndexKey m k where
+``` purescript
+class IndexKey m k where
+```
 
-    class IndexValue m v where
+
+#### `IndexValue`
+
+``` purescript
+class IndexValue m v where
+```
 
 
-### Type Class Instances
+#### `indexKeyArr`
 
-    instance indexKeyArr :: IndexKey (a -> b) a
+``` purescript
+instance indexKeyArr :: IndexKey (a -> b) a
+```
 
-    instance indexKeyArray :: IndexKey [a] Number
 
-    instance indexKeyIdentity :: IndexKey (Identity a) Unit
+#### `indexKeyArray`
 
-    instance indexKeyMap :: IndexKey (M.Map k v) k
+``` purescript
+instance indexKeyArray :: IndexKey [a] Number
+```
 
-    instance indexKeyMaybe :: IndexKey (Maybe a) Unit
 
-    instance indexKeySet :: IndexKey (S.Set k) k
+#### `indexKeyIdentity`
 
-    instance indexKeyStrMap :: IndexKey (SM.StrMap v) String
+``` purescript
+instance indexKeyIdentity :: IndexKey (Identity a) Unit
+```
 
-    instance indexValueArr :: IndexValue (a -> b) b
 
-    instance indexValueArray :: IndexValue [a] a
+#### `indexKeyMap`
 
-    instance indexValueIdentity :: IndexValue (Identity a) a
+``` purescript
+instance indexKeyMap :: IndexKey (M.Map k v) k
+```
 
-    instance indexValueMap :: IndexValue (M.Map k v) v
 
-    instance indexValueMaybe :: IndexValue (Maybe a) a
+#### `indexKeyMaybe`
 
-    instance indexValueSet :: IndexValue (S.Set k) Unit
+``` purescript
+instance indexKeyMaybe :: IndexKey (Maybe a) Unit
+```
 
-    instance indexValueStrMap :: IndexValue (SM.StrMap v) v
+
+#### `indexKeySet`
+
+``` purescript
+instance indexKeySet :: IndexKey (S.Set k) k
+```
+
+
+#### `indexKeyStrMap`
+
+``` purescript
+instance indexKeyStrMap :: IndexKey (SM.StrMap v) String
+```
+
+
+#### `indexValueArr`
+
+``` purescript
+instance indexValueArr :: IndexValue (a -> b) b
+```
+
+
+#### `indexValueArray`
+
+``` purescript
+instance indexValueArray :: IndexValue [a] a
+```
+
+
+#### `indexValueIdentity`
+
+``` purescript
+instance indexValueIdentity :: IndexValue (Identity a) a
+```
+
+
+#### `indexValueMap`
+
+``` purescript
+instance indexValueMap :: IndexValue (M.Map k v) v
+```
+
+
+#### `indexValueMaybe`
+
+``` purescript
+instance indexValueMaybe :: IndexValue (Maybe a) a
+```
+
+
+#### `indexValueSet`
+
+``` purescript
+instance indexValueSet :: IndexValue (S.Set k) Unit
+```
+
+
+#### `indexValueStrMap`
+
+``` purescript
+instance indexValueStrMap :: IndexValue (SM.StrMap v) v
+```
+
 
 
 ## Module Optic.Index.Types
 
-### Types
+#### `LensP`
 
-    type LensP s a = forall f. (Functor f) => (a -> f a) -> s -> f s
+``` purescript
+type LensP s a = forall f. (Functor f) => (a -> f a) -> s -> f s
+```
 
-    type TraversalP s a = forall f. (Applicative f) => (a -> f a) -> s -> f s
+
+#### `TraversalP`
+
+``` purescript
+type TraversalP s a = forall f. (Applicative f) => (a -> f a) -> s -> f s
+```
+
 
 
 
