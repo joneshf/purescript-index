@@ -6,6 +6,7 @@ module Optic.Index where
   import Optic.Index.Class (IndexKey, IndexValue)
   import Optic.Index.Types (TraversalP())
 
+  import qualified Data.Array as A
   import qualified Data.Set as S
   import qualified Data.Map as M
   import qualified Data.StrMap as SM
@@ -24,10 +25,8 @@ module Optic.Index where
     ix _ a2fa (Identity a) = Identity <$> a2fa a
 
   instance indexArray :: Index [a] Number a where
-    ix n _    as | n < 0 = pure as
-    ix _ _    []         = pure []
-    ix 0 a2fa (a:as)     = a2fa a <#> \a' -> a':as
-    ix n a2fa (a:as)     = (:) a <$> ix (n - 1) a2fa as
+    ix n a2fa as = as A.!! n # maybe (pure as) \a ->
+      (\a' -> A.updateAt n a' as) <$> a2fa a
 
   instance indexSet :: (Ord a) => Index (S.Set a) a Unit where
     ix a u2fu s = if S.member a s then pure $ S.insert a s else pure s
