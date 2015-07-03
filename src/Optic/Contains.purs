@@ -1,5 +1,7 @@
 module Optic.Contains where
 
+  import Prelude
+
   import Data.Set (delete, insert, member, Set())
 
   import Optic.Index.Class (IndexKey)

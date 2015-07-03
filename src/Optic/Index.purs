@@ -1,12 +1,15 @@
 module Optic.Index where
 
+  import Prelude
+
   import Data.Identity (Identity(..))
-  import Data.Maybe (maybe, Maybe(..))
+  import Data.Maybe (maybe, fromMaybe, Maybe(..))
 
   import Optic.Index.Class (IndexKey, IndexValue)
   import Optic.Index.Types (TraversalP())
 
   import qualified Data.Array as A
+  import qualified Data.List as L
   import qualified Data.Set as S
   import qualified Data.Map as M
   import qualified Data.StrMap as SM
@@ -24,9 +27,13 @@ module Optic.Index where
   instance indexIdentity :: Index (Identity a) Unit a where
     ix _ a2fa (Identity a) = Identity <$> a2fa a
 
-  instance indexArray :: Index [a] Number a where
+  instance indexArray :: Index (Array a) Int a where
     ix n a2fa as = as A.!! n # maybe (pure as) \a ->
-      (\a' -> A.updateAt n a' as) <$> a2fa a
+      (\a' -> fromMaybe as (A.updateAt n a' as)) <$> a2fa a
+
+  instance indexList :: Index (L.List a) Int a where
+    ix n a2fa as = as L.!! n # maybe (pure as) \a ->
+      (\a' -> fromMaybe as (L.updateAt n a' as)) <$> a2fa a
 
   instance indexSet :: (Ord a) => Index (S.Set a) a Unit where
     ix a u2fu s = if S.member a s then pure $ S.insert a s else pure s
