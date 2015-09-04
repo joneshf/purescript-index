@@ -4,10 +4,10 @@
   "description": "Indexable abstractions.",
   "license": "MIT",
   "dependencies": {
-    "purescript-arrays": "~0.3.0",
-    "purescript-maybe": "~0.2.1",
-    "purescript-maps": "~0.3.0",
-    "purescript-sets": "~0.3.0",
-    "purescript-identity": "~0.3.0"
+    "purescript-arrays": "~0.4.2",
+    "purescript-identity": "~0.4.0",
+    "purescript-maps": "~0.5.0",
+    "purescript-maybe": "~0.3.4",
+    "purescript-sets": "~0.5.0"
   }
 }
