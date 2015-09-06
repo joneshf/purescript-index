@@ -1,5 +1,7 @@
 module Optic.At where
 
+  import Prelude
+
   import Data.Identity (runIdentity, Identity(..))
   import Data.Maybe (maybe, Maybe(..))
 
