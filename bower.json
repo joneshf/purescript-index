@@ -1,11 +1,11 @@
 {
   "name": "purescript-index",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Indexable abstractions.",
   "license": "MIT",
-  "repository": {                                                 
-    "type": "git",                                                
-    "url": "git://github.com/joneshf/purescript-index.git"   
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/joneshf/purescript-index.git"
   },
   "dependencies": {
     "purescript-arrays": "^0.4.2",
